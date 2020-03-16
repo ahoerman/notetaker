@@ -11,6 +11,9 @@ app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });
 
+let savedNotes = JSON.parse(fs.readFileSync("./db.json", "utf8"));
+console.log(savedNotes);
+
 //Handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,7 +27,8 @@ app.get("/notes", function(req, res) {
     res.sendFile(path.join(__dirname, "notes.html"));
 });
 
-app.get("/api/notes", function (req, res, next) {
+app.get("/api/notes", function (req, res) {
+    // return res.json(savedNotes);
     let options = {
       root: path.join(__dirname),
     }
@@ -41,9 +45,11 @@ app.get("/api/notes", function (req, res, next) {
 app.post("/api/notes", function(req, res) {
     let newNote = req.body;
     console.log(newNote);
-    fs.appendFile("db.json", JSON.stringify(newNote), (err) => {
+    savedNotes.push(newNote);
+    console.log(savedNotes);
+    fs.writeFile("db.json", JSON.stringify(savedNotes), (err) => {
         if (err) throw err;
-        console.log('The note was appended to file!');
+        console.log('The note was written to file!');
       });
   });
 
