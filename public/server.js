@@ -24,12 +24,19 @@ app.get("/notes", function(req, res) {
     res.sendFile(path.join(__dirname, "notes.html"));
 });
 
-app.get("/api/notes", function(req, res) {
-    fs.readFile('db.json', (err, data) => {
-        if (err) throw err;
-        return data;
-      });;
-});
+app.get("/api/notes", function (req, res, next) {
+    let options = {
+      root: path.join(__dirname),
+    }
+
+    res.sendFile("db.json", options, function (err) {
+      if (err) {
+        next (err)
+      } else {
+        console.log("Sent db.json");
+      }
+    })
+  })
 
 app.post("/api/notes", function(req, res) {
     let newNote = req.body;
