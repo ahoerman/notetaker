@@ -50,6 +50,7 @@ app.post("/api/notes", function(req, res) {
     fs.writeFile("db.json", JSON.stringify(savedNotes), (err) => {
         if (err) throw err;
         console.log('The note was written to file!');
+        return res.status(200).end();
       });
   });
 
