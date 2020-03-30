@@ -56,10 +56,16 @@ app.post("/api/notes", function(req, res) {
 
   app.delete("/api/notes/:id", function(req, res){
     const thisNote = req.params.id;
-    console.log(thisNote);
-    savedNotes.forEach(function(){
-        if (savedNotes.id == thisNote){
+    const newNotes = savedNotes.filter(note => note.id !== thisNote);
+    
+    return newNotes;
 
-        }
-    });
+    // return savedNotes.filter(function(){
+    //   let NewArray = [];
+    //     if (savedNotes.id !== thisNote){
+    //       NewArray+= savedNotes
+    //       console.log(NewArray);
+    //     };
+    //     return res.json(NewArray);
+    // });
   });
